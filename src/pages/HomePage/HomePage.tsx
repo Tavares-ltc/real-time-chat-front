@@ -1,8 +1,21 @@
-import { useState } from 'react';
 import styles from './HomePage.module.css';
-import { useAuth } from '../../contexts/AuthContext';
-
+import { Sidebar } from '../../components/Sidebar/Sidebar';
+import { useState } from 'react';
 
 export function HomePage() {
-  return(<h1>HomePage</h1>)
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+
+  return (
+    <div className={styles.homeContainer}>
+      <Sidebar onRoomSelect={setSelectedRoomId} />
+
+      <main className={styles.mainContent}>
+        {selectedRoomId ? (
+          <p>Sala selecionada: {selectedRoomId}</p>
+        ) : (
+          <p>Selecione uma sala para ver as mensagens.</p>
+        )}
+      </main>
+    </div>
+  );
 }

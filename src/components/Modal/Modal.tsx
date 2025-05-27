@@ -11,12 +11,14 @@ export type ModalProps = {
 
 export function Modal({ title, children, onSubmit, buttonLabel, buttonClassName }: ModalProps) {
   return (
-    <div className={styles.modalContainer}>
-      <h2 className={styles.modalTitle}>{title}</h2>
-      <div className={styles.modalBody}>{children}</div>
-      <button onClick={onSubmit} className={buttonClassName}>
-        {buttonLabel}
-      </button>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContainer}>
+        <h2 className={styles.modalTitle}>{title}</h2>
+        <div className={styles.modalBody}>{children}</div>
+        <button onClick={onSubmit} className={buttonClassName}>
+          {buttonLabel}
+        </button>
+      </div>
     </div>
   );
 }

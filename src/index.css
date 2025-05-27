@@ -4,25 +4,17 @@
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
+html, body, #root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
   color-scheme: light dark;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #242424;
+  background-color: #383838;
   color: rgba(255, 255, 255, 0.87);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
 }
-
-/* =======================
-   Typography & Links
-   ======================= */
 
 a {
   font-weight: 500;
@@ -38,10 +30,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.25;
 }
-
-/* =======================
-   Buttons
-   ======================= */
 
 button {
   display: inline-block;

@@ -1,0 +1,88 @@
+.sidebarContainer {
+  width: 300px;
+  height: 100vh;
+  background-color: #424242;
+  border-radius: 0 20px 20px 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.newRoom {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 60px;
+}
+
+.newRoom input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.newRoom button {
+  padding: 8px 12px;
+  background-color: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.roomList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.roomItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: #252525;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.roomItem:hover {
+  background-color: #5e5e5e;
+}
+
+.roomItem img {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  margin-top: 10px;
+}
+
+.userInfo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
