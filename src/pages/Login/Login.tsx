@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Modal } from '../../components/Modal/Modal';
 import styles from './Login.module.css';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useAuth } from '../../contexts/AuthContext';
 
 export function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,22 +18,10 @@ export function Login() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const message = await response.text();
-        throw new Error(message || 'Erro ao fazer login');
-      }
-
-      const data = await response.json();
-      localStorage.setItem('token', data.access_token);
-      setError('');
+      await login(email, password);
+      navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Erro ao fazer login');
+      setError(err.response?.data?.message || 'Erro ao fazer login');
     }
   };
 
