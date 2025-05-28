@@ -38,7 +38,14 @@ export function Sidebar({ onRoomSelect }: SidebarProps) {
     }
 
     fetchRooms()
+
+    const interval = setInterval(() => {
+      fetchRooms()
+    }, 10000)
+
+    return () => clearInterval(interval)
   }, [])
+
 
   async function handleCreateRoom() {
     if (!newRoomName.trim()) return

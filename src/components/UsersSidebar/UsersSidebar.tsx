@@ -30,6 +30,8 @@ export function UsersSidebar({ roomId }: UsersSidebarProps) {
 
   useEffect(() => {
     fetchUsers()
+    const interval = setInterval(fetchUsers, 10000)
+    return () => clearInterval(interval)
   }, [roomId])
 
   async function fetchUsers() {
