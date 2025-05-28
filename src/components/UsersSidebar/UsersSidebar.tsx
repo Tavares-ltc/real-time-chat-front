@@ -3,6 +3,7 @@ import { api } from '../../services/api'
 import styles from './UsersSidebar.module.css'
 import { Avatar } from '../Avatar/Avatar'
 import { FiUsers } from 'react-icons/fi'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface UserRoom {
   id: string
@@ -20,8 +21,8 @@ interface UserRoom {
 interface UsersSidebarProps {
   roomId: string
 }
-
 export function UsersSidebar({ roomId }: UsersSidebarProps) {
+  const { user } = useAuth()
   const [users, setUsers] = useState<UserRoom[]>([])
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
@@ -58,6 +59,16 @@ export function UsersSidebar({ roomId }: UsersSidebarProps) {
     }
   }
 
+  async function handleLeaveRoom(userId: string) {
+    if (!confirm('Tem certeza que deseja sair da sala?')) return
+    try {
+      await api.delete(`/room-users/${roomId}/${userId}`)
+      await fetchUsers()
+    } catch (err) {
+      setError('Erro ao sair da sala')
+    }
+  }
+
   return (
     <>
       <button
@@ -84,6 +95,15 @@ export function UsersSidebar({ roomId }: UsersSidebarProps) {
                 <Avatar name={doc.user.username} size="small" />
               )}
               <span>{doc.user.username}</span>
+              {user?.id === doc.user.id && (
+                <button
+                  className={styles.leaveButton}
+                  onClick={() => handleLeaveRoom(user.id)}
+                  title="Sair da sala"
+                >
+                  Sair
+                </button>
+              )}
             </li>
           ))}
         </ul>

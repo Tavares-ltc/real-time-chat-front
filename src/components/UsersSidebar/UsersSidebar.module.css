@@ -106,3 +106,18 @@
     display: block;
   }
 }
+
+.leaveButton {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #f87171;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.leaveButton:hover {
+  text-decoration: underline;
+}
+
