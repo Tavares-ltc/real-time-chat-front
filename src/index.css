@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html, body, #root {
@@ -14,6 +15,8 @@ html, body, #root {
   background-color: #383838;
   color: rgba(255, 255, 255, 0.87);
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 a {

@@ -1,56 +1,62 @@
-import { useEffect, useState } from 'react';
-import { api } from '../../services/api';
-import { useAuth } from '../../contexts/AuthContext';
-import styles from './Sidebar.module.css';
+import { useEffect, useState } from 'react'
+import { api } from '../../services/api'
+import { useAuth } from '../../contexts/AuthContext'
+import styles from './Sidebar.module.css'
 
 interface Room {
-  id: string;
-  name: string;
-  imageUrl?: string;
+  id: string
+  name: string
+  imageUrl?: string
 }
 
 interface SidebarProps {
-  onRoomSelect: (roomId: string) => void;
+  onRoomSelect: (roomId: string) => void
 }
 
 export function Sidebar({ onRoomSelect }: SidebarProps) {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [newRoomName, setNewRoomName] = useState('');
-  const defaultImageUrl = 'https://cdn-icons-png.flaticon.com/512/8377/8377384.png';
+  const [rooms, setRooms] = useState<Room[]>([])
+  const [newRoomName, setNewRoomName] = useState('')
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null)
 
-  const { user } = useAuth();
+  const defaultImageUrl = 'https://cdn-icons-png.flaticon.com/512/8377/8377384.png'
+  const { user } = useAuth()
 
   useEffect(() => {
     async function fetchRooms() {
       try {
-        const response = await api.get('/rooms');
+        const response = await api.get('/rooms')
         const roomsWithImages = response.data.map((room: Room) => ({
           ...room,
           imageUrl: room.imageUrl || defaultImageUrl,
-        }));
-        setRooms(roomsWithImages);
+        }))
+        setRooms(roomsWithImages)
       } catch (error) {
-        console.error('Erro ao buscar salas:', error);
+        console.error('Erro ao buscar salas:', error)
       }
     }
 
-    fetchRooms();
-  }, []);
+    fetchRooms()
+  }, [])
 
   async function handleCreateRoom() {
-    if (!newRoomName.trim()) return;
+    if (!newRoomName.trim()) return
 
     try {
-      const response = await api.post('/rooms', { name: newRoomName });
+      const response = await api.post('/rooms', { name: newRoomName })
       const newRoom: Room = {
         ...response.data,
         imageUrl: response.data.imageUrl || defaultImageUrl,
-      };
-      setRooms((prev) => [...prev, newRoom]);
-      setNewRoomName('');
+      }
+      setRooms((prev) => [...prev, newRoom])
+      setNewRoomName('')
     } catch (error) {
-      console.error('Erro ao criar sala:', error);
+      console.error('Erro ao criar sala:', error)
     }
+  }
+
+  function handleRoomClick(roomId: string) {
+    setSelectedRoomId(roomId)
+    onRoomSelect(roomId)
   }
 
   return (
@@ -71,8 +77,10 @@ export function Sidebar({ onRoomSelect }: SidebarProps) {
         {rooms.map((room) => (
           <div
             key={room.id}
-            className={styles.roomItem}
-            onClick={() => onRoomSelect(room.id)}
+            className={`${styles.roomItem} ${
+              selectedRoomId === room.id ? styles.selected : ''
+            }`}
+            onClick={() => handleRoomClick(room.id)}
           >
             <img src={room.imageUrl || defaultImageUrl} alt={room.name} />
             <span style={{ color: 'white' }}>{room.name}</span>
@@ -89,5 +97,5 @@ export function Sidebar({ onRoomSelect }: SidebarProps) {
         )}
       </footer>
     </div>
-  );
+  )
 }

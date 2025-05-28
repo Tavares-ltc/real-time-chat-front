@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from 'react'
 import { api } from '../../services/api'
 import styles from './MessagesPanel.module.css'
 import { useAuth } from '../../contexts/AuthContext'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-
 import { useMessageSocket } from '../../hooks/useMessageSocket'
+import { formatDateToDDMMYYHHMM } from '../../helpers/date.helper'
+import { MessageCard } from '../MessageCard/MessageCard'
+import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown'
 
 interface Message {
   id: string
@@ -32,9 +33,7 @@ export function MessagesPanel({ roomId }: MessagesPanelProps) {
   const [room, setRoom] = useState<Room | null>(null)
 
   const { user } = useAuth()
-
   const { isConnected, messages: socketMessages, sendMessage } = useMessageSocket(roomId, user?.id ?? '')
-
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -76,9 +75,7 @@ export function MessagesPanel({ roomId }: MessagesPanelProps) {
   }, [messages])
 
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !user) return
-    if (!isConnected) return
-
+    if (!newMessage.trim() || !user || !isConnected) return
     sendMessage(newMessage)
     setNewMessage('')
   }
@@ -91,30 +88,26 @@ export function MessagesPanel({ roomId }: MessagesPanelProps) {
 
       <div className={styles.messagesList}>
         {messages.map((msg) => (
-          <div key={msg.id} className={styles.messageItem}>
-            <img
-              src={
-                msg.user.img ||
-                'https://i.pinimg.com/236x/21/9e/ae/219eaea67aafa864db091919ce3f5d82.jpg'
-              }
-              alt={msg.user.username}
-            />
-            <div>
-              <strong>{msg.user.username}</strong>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
-            </div>
-          </div>
+          <MessageCard
+            key={msg.id}
+            author={msg.user.username}
+            content={
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {msg.content}
+              </ReactMarkdown>
+            }
+            time={formatDateToDDMMYYHHMM(msg.createdAt)}
+          />
         ))}
         <div ref={messagesEndRef} />
       </div>
 
       <div className={styles.inputArea}>
-        <input
-          type="text"
+        <textarea
           placeholder="Digite uma mensagem..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
         />
         <button onClick={handleSendMessage}>Enviar</button>
       </div>
