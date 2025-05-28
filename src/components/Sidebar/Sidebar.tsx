@@ -83,8 +83,8 @@ export function Sidebar({ onRoomSelect }: SidebarProps) {
       <footer className={styles.footer}>
         {user && (
           <div className={styles.userInfo}>
-            <img src={user.img} alt={user.name} />
-            <span style={{ color: 'white' }}>{user.name}</span>
+            <img src={user.img} alt={user.username} />
+            <span style={{ color: 'white' }}>{user.username}</span>
           </div>
         )}
       </footer>

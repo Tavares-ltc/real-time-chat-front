@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import styles from './HomePage.module.css';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
-import { useState } from 'react';
+import { MessagesPanel } from '../../components/MessagesPanel/MessagesPanel';
 
 export function HomePage() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
@@ -8,14 +9,11 @@ export function HomePage() {
   return (
     <div className={styles.homeContainer}>
       <Sidebar onRoomSelect={setSelectedRoomId} />
-
-      <main className={styles.mainContent}>
-        {selectedRoomId ? (
-          <p>Sala selecionada: {selectedRoomId}</p>
-        ) : (
-          <p>Selecione uma sala para ver as mensagens.</p>
-        )}
-      </main>
+      {selectedRoomId ? (
+        <MessagesPanel roomId={selectedRoomId} />
+      ) : (
+        <div className={styles.emptyPanel}>Selecione uma sala</div>
+      )}
     </div>
   );
 }

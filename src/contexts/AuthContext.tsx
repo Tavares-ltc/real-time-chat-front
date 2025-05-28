@@ -2,8 +2,9 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
 
 interface User {
+  id: string;
   img: string;
-  name: string;
+  username: string;
 }
 
 interface AuthContextData {
@@ -30,10 +31,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function login(email: string, password: string) {
+    const defaultProfileImg = "https://i.pinimg.com/236x/21/9e/ae/219eaea67aafa864db091919ce3f5d82.jpg"
+
     const response = await api.post('/auth/login', { email, password });
     localStorage.setItem('token', response.data.access_token);
-    //const profile = await api.get('/auth/profile');
-    const profile = {data: {name: "test", img: "https://i.pinimg.com/236x/21/9e/ae/219eaea67aafa864db091919ce3f5d82.jpg"}}
+    const profile = await api.get('/auth/profile');
+    if(!profile.data.img){
+      profile.data.img = defaultProfileImg
+    }
     setUser(profile.data);
   }
 
